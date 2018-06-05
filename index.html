@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>gojs</title>
+    <script src="gojs.js"></script>
+</head>
+
+<body>
+<script>
+    let array   = [[9, 5], [3, 2], [8, 6], [4, 6], [1, 2]];
+    let ptarray = _go.pt.array(array);
+    for(var i = 0; i < ptarray.length; i++) {
+        console.log(ptarray[i].WKT())
+    }
+    console.log(array)
+</script>
+</body>
+</html>
