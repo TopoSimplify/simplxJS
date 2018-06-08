@@ -178,13 +178,17 @@ func (o *SplxObj) Simplify() *js.Object {
 	for _, i := range ptset.Values() {
 		indices = append(indices, i.(int))
 	}
+	var simplePts []*geom.Point
 	for _, i := range indices {
 		simple = append(simple, coords[i][:])
+		simplePts = append(simplePts, coords[i])
 	}
 
 	var obj = js.Global.Get("Object").New()
 	obj.Set("simple", simple)
 	obj.Set("indices", indices)
+	obj.Set("wkt", geom.NewLineString(simplePts).WKT())
+
 	return obj
 
 }

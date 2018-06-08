@@ -6,10 +6,10 @@ import (
 
 func main() {
 	js.Global.Set("simplx", map[string]interface{}{
-		"NewSimplx": NewSimplx,
+		"New": NewSimplx,
 	})
 }
 
 func NewSimplx() *js.Object {
-	return js.MakeWrapper(&SplxObj{})
+	return js.MakeWrapper(&SplxObj{OffsetFunc:"dp"})
 }

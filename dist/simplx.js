@@ -28609,15 +28609,24 @@ $packages["github.com/intdxdt/rtree"] = (function() {
 		return v;
 	};
 	removeNode = function(a, i) {
-		var _tmp, _tmp$1, a, i, n;
+		var _i, _ref, a, b, i, n, o;
 		n = a.$length - 1 >> 0;
 		if (i > n) {
 			return a;
 		}
-		_tmp = $appendSlice($subslice(a, 0, i), $subslice(a, (i + 1 >> 0)));
-		_tmp$1 = ptrType.nil;
-		a = _tmp;
-		((n < 0 || n >= a.$length) ? ($throwRuntimeError("index out of range"), undefined) : a.$array[a.$offset + n] = _tmp$1);
+		b = sliceType.nil;
+		if (i < n) {
+			b = $appendSlice(b, $subslice(a, (i + 1 >> 0)));
+		}
+		a = $subslice(a, 0, i);
+		_ref = b;
+		_i = 0;
+		while (true) {
+			if (!(_i < _ref.$length)) { break; }
+			o = ((_i < 0 || _i >= _ref.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref.$array[_ref.$offset + _i]);
+			a = $append(a, o);
+			_i++;
+		}
 		return a;
 	};
 	RTree.ptr.prototype.condense = function(path) {
@@ -45317,7 +45326,7 @@ $packages["github.com/TopoSimplify/offset"] = (function() {
 	$pkg.$init = $init;
 	return $pkg;
 })();
-$packages["gojs"] = (function() {
+$packages["github.com/TopoSimplify/simplxJS"] = (function() {
 	var $pkg = {}, $init, json, constdp, offset, opts, js, geom, strings, SplxObj, ptrType, funcType, mapType, ptrType$1, sliceType, ptrType$2, sliceType$1, sliceType$2, sliceType$3, sliceType$4, sliceType$5, sliceType$6, ptrType$3, offsetFuncs, main, NewSimplx, marshal;
 	json = $packages["encoding/json"];
 	constdp = $packages["github.com/TopoSimplify/constdp"];
@@ -45326,7 +45335,7 @@ $packages["gojs"] = (function() {
 	js = $packages["github.com/gopherjs/gopherjs/js"];
 	geom = $packages["github.com/intdxdt/geom"];
 	strings = $packages["strings"];
-	SplxObj = $pkg.SplxObj = $newType(0, $kindStruct, "main.SplxObj", true, "gojs", true, function(Polyline_, Constraints_, OffsetFunc_, Threshold_, MinDist_, RelaxDist_, PlanarSelf_, NonPlanarSelf_, AvoidNewSelfIntersects_, GeomRelation_, DistRelation_, DirRelation_) {
+	SplxObj = $pkg.SplxObj = $newType(0, $kindStruct, "main.SplxObj", true, "github.com/TopoSimplify/simplxJS", true, function(Polyline_, Constraints_, OffsetFunc_, Threshold_, MinDist_, RelaxDist_, PlanarSelf_, NonPlanarSelf_, AvoidNewSelfIntersects_, GeomRelation_, DistRelation_, DirRelation_) {
 		this.$val = this;
 		if (arguments.length === 0) {
 			this.Polyline = ptrType$1.nil;
@@ -45370,10 +45379,10 @@ $packages["gojs"] = (function() {
 	sliceType$6 = $sliceType(sliceType$5);
 	ptrType$3 = $ptrType(SplxObj);
 	main = function() {
-		$global.simplx = $externalize($makeMap($String.keyFor, [{ k: "NewSimplx", v: new funcType(NewSimplx) }]), mapType);
+		$global.simplx = $externalize($makeMap($String.keyFor, [{ k: "New", v: new funcType(NewSimplx) }]), mapType);
 	};
 	NewSimplx = function() {
-		return js.MakeWrapper(new SplxObj.ptr(ptrType$1.nil, sliceType.nil, "", 0, 0, 0, false, false, false, false, false, false));
+		return js.MakeWrapper(new SplxObj.ptr(ptrType$1.nil, sliceType.nil, "dp", 0, 0, 0, false, false, false, false, false, false));
 	};
 	$pkg.NewSimplx = NewSimplx;
 	SplxObj.ptr.prototype.SetPolyline = function(v) {
@@ -45579,8 +45588,8 @@ $packages["gojs"] = (function() {
 	};
 	SplxObj.prototype.GetDirRelation = function() { return this.$val.GetDirRelation(); };
 	SplxObj.ptr.prototype.Simplify = function() {
-		var _entry, _i, _i$1, _i$2, _r, _r$1, _r$2, _ref, _ref$1, _ref$2, constraints, coords, fn, homo, i, i$1, indices, o, obj, options, ptset, simple, wkt, $s, $r;
-		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _entry = $f._entry; _i = $f._i; _i$1 = $f._i$1; _i$2 = $f._i$2; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; constraints = $f.constraints; coords = $f.coords; fn = $f.fn; homo = $f.homo; i = $f.i; i$1 = $f.i$1; indices = $f.indices; o = $f.o; obj = $f.obj; options = $f.options; ptset = $f.ptset; simple = $f.simple; wkt = $f.wkt; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
+		var _entry, _i, _i$1, _i$2, _r, _r$1, _r$2, _r$3, _r$4, _ref, _ref$1, _ref$2, constraints, coords, fn, homo, i, i$1, indices, o, obj, options, ptset, simple, simplePts, wkt, $s, $r;
+		/* */ $s = 0; var $f, $c = false; if (this !== undefined && this.$blk !== undefined) { $f = this; $c = true; _entry = $f._entry; _i = $f._i; _i$1 = $f._i$1; _i$2 = $f._i$2; _r = $f._r; _r$1 = $f._r$1; _r$2 = $f._r$2; _r$3 = $f._r$3; _r$4 = $f._r$4; _ref = $f._ref; _ref$1 = $f._ref$1; _ref$2 = $f._ref$2; constraints = $f.constraints; coords = $f.coords; fn = $f.fn; homo = $f.homo; i = $f.i; i$1 = $f.i$1; indices = $f.indices; o = $f.o; obj = $f.obj; options = $f.options; ptset = $f.ptset; simple = $f.simple; simplePts = $f.simplePts; wkt = $f.wkt; $s = $f.$s; $r = $f.$r; } s: while (true) { switch ($s) { case 0:
 		o = this;
 		options = new opts.Opts.ptr(o.Threshold, o.MinDist, o.RelaxDist, o.PlanarSelf, false, o.AvoidNewSelfIntersects, o.GeomRelation, o.DistRelation, o.DirRelation);
 		constraints = sliceType$4.nil;
@@ -45609,19 +45618,24 @@ $packages["gojs"] = (function() {
 			indices = $append(indices, $assertType(i, $Int));
 			_i$1++;
 		}
+		simplePts = sliceType$1.nil;
 		_ref$2 = indices;
 		_i$2 = 0;
 		while (true) {
 			if (!(_i$2 < _ref$2.$length)) { break; }
 			i$1 = ((_i$2 < 0 || _i$2 >= _ref$2.$length) ? ($throwRuntimeError("index out of range"), undefined) : _ref$2.$array[_ref$2.$offset + _i$2]);
 			simple = $append(simple, new sliceType$2(((i$1 < 0 || i$1 >= coords.$length) ? ($throwRuntimeError("index out of range"), undefined) : coords.$array[coords.$offset + i$1])));
+			simplePts = $append(simplePts, ((i$1 < 0 || i$1 >= coords.$length) ? ($throwRuntimeError("index out of range"), undefined) : coords.$array[coords.$offset + i$1]));
 			_i$2++;
 		}
 		obj = new ($global.Object)();
 		obj.simple = $externalize(simple, sliceType$3);
 		obj.indices = $externalize(indices, sliceType$5);
+		_r$3 = geom.NewLineString(simplePts); /* */ $s = 6; case 6: if($c) { $c = false; _r$3 = _r$3.$blk(); } if (_r$3 && _r$3.$blk !== undefined) { break s; }
+		_r$4 = _r$3.WKT(); /* */ $s = 7; case 7: if($c) { $c = false; _r$4 = _r$4.$blk(); } if (_r$4 && _r$4.$blk !== undefined) { break s; }
+		obj.wkt = $externalize(_r$4, $String);
 		$s = -1; return obj;
-		/* */ } return; } if ($f === undefined) { $f = { $blk: SplxObj.ptr.prototype.Simplify }; } $f._entry = _entry; $f._i = _i; $f._i$1 = _i$1; $f._i$2 = _i$2; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f.constraints = constraints; $f.coords = coords; $f.fn = fn; $f.homo = homo; $f.i = i; $f.i$1 = i$1; $f.indices = indices; $f.o = o; $f.obj = obj; $f.options = options; $f.ptset = ptset; $f.simple = simple; $f.wkt = wkt; $f.$s = $s; $f.$r = $r; return $f;
+		/* */ } return; } if ($f === undefined) { $f = { $blk: SplxObj.ptr.prototype.Simplify }; } $f._entry = _entry; $f._i = _i; $f._i$1 = _i$1; $f._i$2 = _i$2; $f._r = _r; $f._r$1 = _r$1; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._ref = _ref; $f._ref$1 = _ref$1; $f._ref$2 = _ref$2; $f.constraints = constraints; $f.coords = coords; $f.fn = fn; $f.homo = homo; $f.i = i; $f.i$1 = i$1; $f.indices = indices; $f.o = o; $f.obj = obj; $f.options = options; $f.ptset = ptset; $f.simple = simple; $f.simplePts = simplePts; $f.wkt = wkt; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	SplxObj.prototype.Simplify = function() { return this.$val.Simplify(); };
 	marshal = function(o) {
@@ -45660,7 +45674,7 @@ $packages["gojs"] = (function() {
 	return $pkg;
 })();
 $synthesizeMethods();
-var $mainPkg = $packages["gojs"];
+var $mainPkg = $packages["github.com/TopoSimplify/simplxJS"];
 $packages["runtime"].$init();
 $go($mainPkg.$init, []);
 $flushConsole();
